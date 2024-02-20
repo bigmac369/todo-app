@@ -1,9 +1,20 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Modal from "./Modal";
 import { FaPlus } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { Rootstate } from "../Redux/store";
+import { updateTodoListStatus } from "../slices/todoSlice";
 
 const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
+  const todoListStatus = useSelector((state: Rootstate) => {
+    return state.todo.todoListStatus;
+  });
+
+  const updateFilterStatus = (e: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(updateTodoListStatus(e.target.value));
+  };
 
   return (
     <div className="flex justify-between py-4">
@@ -14,7 +25,8 @@ const Header = () => {
         Add Task <FaPlus />
       </button>
       <select
-        name=""
+        value={todoListStatus}
+        onChange={updateFilterStatus}
         id="status"
         className="bg-slate-300 rounded-md py-2 px-4 cursor-pointer"
       >

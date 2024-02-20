@@ -41,7 +41,7 @@ const Modal = ({ isModalOpen, setIsModalOpen, type = "add", todo }: Props) => {
           addTodo({
             id: uuidv4(),
             text: text,
-            status: "incomplete",
+            completed: false,
             formattedTime: new Date().toLocaleTimeString(undefined, {
               hour: "numeric",
               minute: "numeric",
@@ -57,8 +57,6 @@ const Modal = ({ isModalOpen, setIsModalOpen, type = "add", todo }: Props) => {
         setText("");
       }
       if (type === "update" && todo?.text) {
-        // console.log("updating task");
-        // console.log(todo?.text);
         dispatch(updateTodo({ ...todo, text }));
         setIsModalOpen(false);
       }

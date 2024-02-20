@@ -1,7 +1,7 @@
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { todoInfo } from "./TodoList";
-import { deleteTodo } from "../slices/todoSlice";
+import { deleteTodo, toggleComplete } from "../slices/todoSlice";
 import { useDispatch } from "react-redux";
 import Modal from "./Modal";
 import { useState } from "react";
@@ -21,6 +21,10 @@ const Todo = ({ todo }: todoProps) => {
     setUpdateModalOpen(true);
   };
 
+  const handleToggle = () => {
+    dispatch(toggleComplete(todo.id));
+  };
+
   return (
     <>
       <div
@@ -28,12 +32,19 @@ const Todo = ({ todo }: todoProps) => {
     "
       >
         <div className="flex justify-center items-center gap-4">
-          <div className="flex ">
-            <input type="checkbox" className="w-8 h-8" />
+          <div className="flex">
+            <input
+              type="checkbox"
+              checked={todo.completed}
+              className="w-8 h-8 cursor-pointer"
+              onChange={handleToggle}
+            />
           </div>
 
           <div className="flex flex-col">
-            <p className="break-all">{todo.text}</p>
+            <p className={`break-all ${todo.completed ? "line-through" : ""}`}>
+              {todo.text}
+            </p>
             <p className="shrink-0">
               {todo.formattedTime}, {todo.formattedDate}
             </p>

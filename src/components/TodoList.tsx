@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 export type todoInfo = {
   id: string;
   text: string;
-  status: string;
+  completed: boolean;
   formattedTime: string;
   formattedDate: string;
 };
@@ -29,14 +29,27 @@ const TodoList = () => {
   //     }),
   //   },
   // ]);
+
+  const todoListStatus = useSelector((state: Rootstate) => {
+    return state.todo.todoListStatus;
+  });
   const todos = useSelector((state: Rootstate) => {
     return state.todo.todoList;
   });
 
-  console.log(todos);
+  const filteredTodoList = todos.filter((todo) => {
+    if (todoListStatus === "all") {
+      return true;
+    } else if (todoListStatus === "incomplete") {
+      return !todo.completed;
+    } else if (todoListStatus === "completed") {
+      return todo.completed;
+    }
+  });
+
   return (
     <div className="p-4 bg-slate-200 flex flex-col gap-4 rounded-md">
-      {todos.map((todo) => (
+      {filteredTodoList.map((todo) => (
         <Todo key={todo.id} todo={todo} />
       ))}
     </div>
